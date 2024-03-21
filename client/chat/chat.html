@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/assets/icono.png" />
+    <link rel="stylesheet" href="/chat/chat.css" />
+    <title>Chat</title>
+  </head>
+  <body>
+    <header class="cabecera-titulo">
+      <h1>🗨️ Todo Chats</h1>
+    </header>
+
+    <main>
+      <div class="contenedor-main">
+        <nav>
+          <div class="listado-titulo-salas">
+            <h2>Listado de Salas</h2>
+          </div>
+          <ul>
+            <li class="sala" data-activa="true">Sala 1</li>
+            <li class="sala" data-activa="false">Sala 2</li>
+            <li class="sala" data-activa="false">Sala 3</li>
+            <li class="sala" data-activa="false">Sala 4</li>
+          </ul>
+        </nav>
+
+        <section class="chat">
+          <header>
+            <h3>Título de sala</h3>
+          </header>
+
+          <ul id="messages" class="messages"></ul>
+
+          <form id="form" class="formulario">
+            <label class="nick-cliente">USER</label>
+            <input
+              id="input"
+              name="messages"
+              class="espacio-comentario"
+              type="text"
+              placeholder="Escribe tu mensaje"
+              autocomplete="off"
+            />
+            <button class="boton-comentario" type="submit">Enviar</button>
+          </form>
+        </section>
+
+        <aside class="contenedor-usuarios-conectados">
+          <header class="cabezera-usuarios-conectados">
+            <h3>Usuarios conectados</h3>
+          </header>
+          <div class="usuarios-conectados">
+            <ul id="listado-usuarios"></ul>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <script type="module" src="/chat/chat.js"></script>
+  </body>
+</html>
