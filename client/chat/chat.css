@@ -169,6 +169,8 @@ main div section header {
 }
 
 .cabezera-usuarios-conectados {
+    display: flex;
+    flex-direction: row;
     height: 94px;
     list-style-type: none;
     padding: 0 10px;
@@ -178,6 +180,17 @@ main div section header {
     border: 1px solid #fff;
 
 }
+
+.contador-usuarios {
+    text-align: center;
+    width: 50px;
+    height: auto;
+    font-size: 30px;
+    background: rgb(151, 5, 5);
+    border: 2px solid #333;
+    border-radius: 50%;
+}
+
 
 .usuarios-conectados {
     list-style-type: none;

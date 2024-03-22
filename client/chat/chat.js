@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const roomTitle = document.querySelector('.chat header h3')
   const userIboton = document.querySelector('.nick-cliente')
 
+  const contadorUsuarios = document.querySelector('.contador-usuarios')
+
   const socket = io({
     auth: {
       username,
@@ -23,9 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const messages = document.getElementById('messages')
   const form = document.getElementById('form')
 
-  const listStyle = ['red', 'blue', 'green', 'purple', 'cyan', 'lime', 'withe', 'orange']
-  const colorRandom = Math.floor(Math.random() * listStyle.length)
-  const colorSelect = listStyle[colorRandom]
+  const listaUsuarios = {}
 
   newUserItem.textContent = username
   usersList.appendChild(newUserItem)
@@ -68,21 +68,35 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   socket.on('chat message', (msg, senderUsername) => {
-    let messageUsername = senderUsername
-    let alignmentClass = ''
+    const messageUsername = senderUsername === username ? 'yo' : senderUsername
+    const alignmentClass = senderUsername === username ? 'align-right' : ''
     const isEven = messages.querySelectorAll('li').length % 2 === 0
 
-    if (username === senderUsername) {
-      messageUsername = 'yo'
-      alignmentClass = 'align-right'
+    if (!listaUsuarios[senderUsername]) {
+      const listStyle = ['red', 'blue', 'green', 'purple', 'cyan', 'lime', 'white', 'orange']
+      const colorRandom = Math.floor(Math.random() * listStyle.length)
+
+      listaUsuarios[senderUsername] = listStyle[colorRandom]
     }
+
+    const userColor = listaUsuarios[senderUsername]
 
     const item = `
     <li class="message-listado ${alignmentClass}" style="background-color: ${isEven ? '#3b3b3b' : '#555555'};">
-      <small style="color:${colorSelect};">${messageUsername}:</small>
+      <small style="color:${userColor};">${messageUsername}:</small>
       <p>${msg}</p>
     </li>
     `
     messages.insertAdjacentHTML('beforeend', item)
+  })
+
+  socket.on('room users', ({ room, users }) => {
+    contadorUsuarios.textContent = users.length // Actualizar el contador de usuarios
+    usersList.innerHTML = '' // Limpiar lista actual de usuarios
+    users.forEach(user => {
+      const userItem = document.createElement('li')
+      userItem.textContent = user
+      usersList.appendChild(userItem) // Añadir cada usuario a la lista
+    })
   })
 })
