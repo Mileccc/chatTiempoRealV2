@@ -14,18 +14,31 @@ const io = new Server(server)
 app.use(logger('dev'))
 
 io.on('connection', (socket) => {
+  const username = socket.handshake.auth.username ?? 'anonimous'
+  // Uniendo el socket a una sala basada en el auth proporcionado
+  let room = socket.handshake.auth.room
+  socket.join(room)
+
   console.log('a user has connected')
 
   socket.on('disconnect', () => {
     console.log('a user has disconnected')
   })
 
-  socket.on('chat message', (msg) => {
-    const username = socket.handshake.auth.username ?? 'anonimous'
+  socket.on('chat message', ({ msg, room }) => {
+    console.log('Username: ' + username + ' -- ' + 'message: ' + msg + ' -- Room: ' + room)
 
-    console.log('Username: ' + username + ' -- ' + 'message: ' + msg)
+    // Emitiendo el mensaje solo a los usuarios en la misma sala
+    io.to(room).emit('chat message', msg, username)
+  })
 
-    io.emit('chat message', msg, username)
+  // *************
+  socket.on('change room', ({ newRoom, oldRoom }) => {
+    socket.leave(oldRoom)
+    socket.join(newRoom)
+    room = newRoom
+
+    console.log(`El usuario ${username} ha cambiado de ${oldRoom} a ${newRoom}`)
   })
 })
 

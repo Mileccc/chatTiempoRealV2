@@ -191,9 +191,19 @@ main div section header {
     padding: 10px 5PX;
 }
 
+.messages {
+    padding: 0;
+}
+
 .message-listado {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 7px;
+    padding-left: 30px;
+}
+
+.align-right {
+    justify-content:flex-end;
+    padding-right: 30px;
 }
